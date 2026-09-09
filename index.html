@@ -1,0 +1,2737 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AgriAI Dashboard</title>
+
+    <link rel="stylesheet" href="/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+     ========================================================= -->
+
+<aside class="sidebar" id="sidebar">
+
+
+    <!-- LOGO -->
+
+    <div class="logo-section">
+
+        <div class="logo-icon">
+            🌱
+        </div>
+
+        <div>
+
+            <h2>AgriAI</h2>
+
+            <p>Smart Agriculture</p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="navigation">
+
+
+        <button class="nav-item active" data-page="dashboard">
+
+            <span>📊</span>
+            <span>Dashboard</span>
+
+        </button>
+
+
+        <button class="nav-item" data-page="crop-health">
+
+            <span>🌿</span>
+            <span>Crop Health</span>
+
+        </button>
+
+
+        <button class="nav-item" data-page="soil">
+
+            <span>🪨</span>
+            <span>Soil</span>
+
+        </button>
+
+
+        <button class="nav-item" data-page="ai">
+
+            <span>🤖</span>
+            <span>AI Analysis</span>
+
+        </button>
+
+
+        <button class="nav-item" data-page="image">
+
+            <span>📷</span>
+            <span>Crop Image</span>
+
+        </button>
+
+
+        <button class="nav-item" data-page="history">
+
+            <span>📜</span>
+            <span>History</span>
+
+        </button>
+
+
+        <button class="nav-item" data-page="alerts">
+
+            <span>⚠️</span>
+            <span>Alerts</span>
+
+        </button>
+
+
+        <button class="nav-item" data-page="settings">
+
+            <span>⚙️</span>
+            <span>Settings</span>
+
+        </button>
+
+
+    </nav>
+
+
+
+    <!-- DEVICE STATUS -->
+
+    <div class="sidebar-bottom">
+
+        <div class="device-card">
+
+            <div class="device-status-row">
+
+                <span
+                    class="status-dot"
+                    id="deviceStatusDot">
+                </span>
+
+
+                <div>
+
+                    <strong id="deviceStatus">
+                        Connecting...
+                    </strong>
+
+                    <small id="deviceInfo">
+                        ESP32-S3
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="device-extra">
+
+                <span>📡 Wi-Fi</span>
+                <span>● Monitoring</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</aside>
+
+
+
+<!-- =========================================================
+     MAIN
+     ========================================================= -->
+
+<div class="main">
+
+
+    <!-- =====================================================
+         TOPBAR
+         ===================================================== -->
+
+    <header class="topbar">
+
+
+        <div class="topbar-left">
+
+            <button
+                id="menuButton"
+                class="menu-button">
+
+                ☰
+
+            </button>
+
+
+            <div>
+
+                <h1 id="pageTitle">
+                    Dashboard
+                </h1>
+
+                <p id="pageSubtitle">
+                    Monitor your farm in real time
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+       <div class="topbar-right">
+
+    <div class="data-mode">
+        <span class="status-dot"></span>
+        <span>
+            DEMO DATA
+        </span>
+    </div>
+
+    <!-- ALERT BUTTON -->
+    <button
+        id="alertBellButton"
+        class="alert-bell-button"
+        type="button"
+        aria-label="Farm alerts"
+        title="Farm alerts"
+    >
+        <span
+            id="alertBellIcon"
+            class="alert-bell-icon"
+        >
+            🔔
+        </span>
+
+        <span
+            id="alertBellBadge"
+            class="alert-bell-badge"
+            style="display:none;"
+        >
+            0
+        </span>
+    </button>
+
+    <div id="currentTime">
+        --:--:--
+    </div>
+
+</div>
+
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CONTENT
+         ===================================================== -->
+
+    <main class="content">
+
+
+
+        <!-- =================================================
+             DASHBOARD
+             ================================================= -->
+
+        <section
+            class="page active-page"
+            id="dashboard">
+
+
+            <div class="welcome-card">
+
+
+                <div>
+
+                    <div class="section-kicker">
+                        LIVE FARM MONITORING
+                    </div>
+
+                    <h2>
+                        Farm Overview 🌱
+                    </h2>
+
+                    <p>
+                        Monitor soil conditions, environmental
+                        parameters, crop health and AI insights
+                        from one place.
+                    </p>
+
+
+                    <div class="quick-status-row">
+
+                        <span class="quick-status">
+                            🟢 Sensors Active
+                        </span>
+
+                        <span class="quick-status">
+                            🤖 AI Ready
+                        </span>
+
+                        <span class="quick-status">
+                            📡 Live Monitoring
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="crop-selector">
+
+                    <label for="cropSelect">
+                        MONITORED CROP
+                    </label>
+
+                    <select id="cropSelect">
+
+                        <option value="tomato">
+                            Tomato
+                        </option>
+
+                        <option value="rice">
+                            Rice
+                        </option>
+
+                        <option value="wheat">
+                            Wheat
+                        </option>
+
+                        <option value="maize">
+                            Maize
+                        </option>
+
+                        <option value="cotton">
+                            Cotton
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- SENSOR CARDS -->
+
+            <div class="sensor-grid">
+
+
+                <div class="sensor-card">
+
+                    <div class="sensor-icon">
+                        💧
+                    </div>
+
+                    <div>
+
+                        <p>Soil Moisture</p>
+
+                        <h2>
+                            <span id="moistureValue">
+                                --
+                            </span>%
+                        </h2>
+
+                        <small class="sensor-description">
+                            Root-zone water level
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="sensor-card">
+
+                    <div class="sensor-icon">
+                        🌡️
+                    </div>
+
+                    <div>
+
+                        <p>Temperature</p>
+
+                        <h2>
+                            <span id="temperatureValue">
+                                --
+                            </span>°C
+                        </h2>
+
+                        <small class="sensor-description">
+                            Current environment
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="sensor-card">
+
+                    <div class="sensor-icon">
+                        💨
+                    </div>
+
+                    <div>
+
+                        <p>Humidity</p>
+
+                        <h2>
+                            <span id="humidityValue">
+                                --
+                            </span>%
+                        </h2>
+
+                        <small class="sensor-description">
+                            Atmospheric humidity
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="sensor-card">
+
+                    <div class="sensor-icon">
+                        🧪
+                    </div>
+
+                    <div>
+
+                        <p>Nitrogen</p>
+
+                        <h2>
+                            <span id="nitrogenValue">
+                                --
+                            </span>
+                        </h2>
+
+                        <small class="sensor-description">
+                            Vegetative growth
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="sensor-card">
+
+                    <div class="sensor-icon">
+                        🧪
+                    </div>
+
+                    <div>
+
+                        <p>Phosphorus</p>
+
+                        <h2>
+                            <span id="phosphorusValue">
+                                --
+                            </span>
+                        </h2>
+
+                        <small class="sensor-description">
+                            Root development
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="sensor-card">
+
+                    <div class="sensor-icon">
+                        🧪
+                    </div>
+
+                    <div>
+
+                        <p>Potassium</p>
+
+                        <h2>
+                            <span id="potassiumValue">
+                                --
+                            </span>
+                        </h2>
+
+                        <small class="sensor-description">
+                            Plant strength
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- FARM SNAPSHOT -->
+
+            <div class="info-grid">
+
+
+                <div class="info-card">
+
+                    <div class="info-card-icon">
+                        🌱
+                    </div>
+
+                    <div>
+
+                        <span class="info-label">
+                            CROP
+                        </span>
+
+                        <strong id="dashboardCrop">
+                            Tomato
+                        </strong>
+
+                        <p>
+                            Currently selected crop
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="info-card">
+
+                    <div class="info-card-icon">
+                        💦
+                    </div>
+
+                    <div>
+
+                        <span class="info-label">
+                            WATER NEED
+                        </span>
+
+                        <strong>
+                            Monitoring
+                        </strong>
+
+                        <p>
+                            Based on soil moisture
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="info-card">
+
+                    <div class="info-card-icon">
+                        🧬
+                    </div>
+
+                    <div>
+
+                        <span class="info-label">
+                            NUTRIENTS
+                        </span>
+
+                        <strong>
+                            N / P / K
+                        </strong>
+
+                        <p>
+                            Continuous monitoring
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="info-card">
+
+                    <div class="info-card-icon">
+                        🤖
+                    </div>
+
+                    <div>
+
+                        <span class="info-label">
+                            AI STATUS
+                        </span>
+
+                        <strong>
+                            Ready
+                        </strong>
+
+                        <p>
+                            Sensor analysis available
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- CHARTS -->
+
+            <div class="dashboard-grid">
+
+
+                <div class="chart-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-kicker">
+                                ENVIRONMENT
+                            </span>
+
+                            <h3>
+                                Environmental Trends
+                            </h3>
+
+                        </div>
+
+                        <span class="card-badge">
+                            LIVE
+                        </span>
+
+                    </div>
+
+                    <canvas id="environmentChart"></canvas>
+
+                </div>
+
+
+
+                <div class="chart-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-kicker">
+                                SOIL NUTRIENTS
+                            </span>
+
+                            <h3>
+                                NPK Levels
+                            </h3>
+
+                        </div>
+
+                        <span class="card-badge">
+                            SENSOR
+                        </span>
+
+                    </div>
+
+                    <canvas id="npkChart"></canvas>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- HEALTH -->
+
+            <div class="health-card">
+
+
+                <div class="health-circle">
+
+                    <span id="healthCircleValue">
+                        --
+                    </span>
+
+                    <small>
+                        Health Score
+                    </small>
+
+                </div>
+
+
+
+                <div class="health-info">
+
+                    <span class="card-kicker">
+                        CROP CONDITION
+                    </span>
+
+                    <h3>
+                        Crop Health
+                    </h3>
+
+                    <p id="healthStatus">
+                        Calculating crop health...
+                    </p>
+
+
+                    <div class="progress-bar">
+
+                        <div
+                            class="progress-fill"
+                            id="healthMoisture"
+                            style="width:0%;">
+                        </div>
+
+                    </div>
+
+
+                    <div class="health-footer">
+
+                        <span>
+                            AI health estimation
+                        </span>
+
+                        <span>
+                            Live sensor data
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             CROP HEALTH
+             ================================================= -->
+
+        <section
+            class="page"
+            id="crop-health">
+
+
+            <div class="page-header">
+
+                <span class="page-kicker">
+                    PLANT MONITORING
+                </span>
+
+                <h2>
+                    Crop Health 🌿
+                </h2>
+
+                <p>
+                    A detailed view of the current crop condition,
+                    environmental stress and growth factors.
+                </p>
+
+            </div>
+
+
+
+            <div class="large-health-card">
+
+
+                <div class="health-circle large">
+
+                    <span id="cropHealthBig">
+                        --
+                    </span>
+
+                    <small>
+                        Health Score
+                    </small>
+
+                </div>
+
+
+
+                <div class="health-details">
+
+                    <span class="card-kicker">
+                        CURRENT ASSESSMENT
+                    </span>
+
+                    <h3>
+                        Current Crop Condition
+                    </h3>
+
+                    <p id="cropHealthDescription">
+                        The system is continuously evaluating
+                        environmental and soil conditions.
+                    </p>
+
+
+                    <div class="health-stat">
+
+                        <span>
+                            Soil Moisture
+                        </span>
+
+                        <strong id="cropHealthSoilMoisture">
+                            --%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="health-stat">
+
+                        <span>
+                            Growth Condition
+                        </span>
+
+                        <strong class="status-text">
+                            Monitoring
+                        </strong>
+
+                    </div>
+
+
+                    <div class="health-stat">
+
+                        <span>
+                            Stress Level
+                        </span>
+
+                        <strong class="status-text">
+                            Monitoring
+                        </strong>
+
+                    </div>
+
+
+                    <div class="health-stat">
+
+                        <span>
+                            Disease Risk
+                        </span>
+
+                        <strong class="status-text">
+                            AI Required
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- HEALTH FACTORS -->
+
+            <div class="section-title-row">
+
+                <div>
+
+                    <span class="page-kicker">
+                        HEALTH FACTORS
+                    </span>
+
+                    <h3>
+                        What affects crop health?
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="health-factor-grid">
+
+
+                <div class="health-factor-card">
+
+                    <div class="factor-icon">
+                        💧
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Water Availability
+                        </h3>
+
+                        <p>
+                            Soil moisture helps determine whether
+                            the crop has enough water around its
+                            root zone.
+                        </p>
+
+                    </div>
+
+                    <span class="factor-status">
+                        SENSOR
+                    </span>
+
+                </div>
+
+
+
+                <div class="health-factor-card">
+
+                    <div class="factor-icon">
+                        🌡️
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Temperature
+                        </h3>
+
+                        <p>
+                            Temperature influences plant growth,
+                            metabolism and environmental stress.
+                        </p>
+
+                    </div>
+
+                    <span class="factor-status">
+                        SENSOR
+                    </span>
+
+                </div>
+
+
+
+                <div class="health-factor-card">
+
+                    <div class="factor-icon">
+                        🧪
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Nutrient Balance
+                        </h3>
+
+                        <p>
+                            Nitrogen, phosphorus and potassium are
+                            monitored for nutrient availability.
+                        </p>
+
+                    </div>
+
+                    <span class="factor-status">
+                        NPK
+                    </span>
+
+                </div>
+
+
+
+                <div class="health-factor-card">
+
+                    <div class="factor-icon">
+                        📷
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Visual Condition
+                        </h3>
+
+                        <p>
+                            Plant images can be analyzed by AI for
+                            visible stress, disease or abnormalities.
+                        </p>
+
+                    </div>
+
+                    <span class="factor-status">
+                        AI
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             SOIL
+             ================================================= -->
+
+        <section
+            class="page"
+            id="soil">
+
+
+            <div class="page-header">
+
+                <span class="page-kicker">
+                    SOIL INTELLIGENCE
+                </span>
+
+                <h2>
+                    Soil Monitoring 🪨
+                </h2>
+
+                <p>
+                    Track soil moisture and nutrient availability
+                    for healthier crop growth.
+                </p>
+
+            </div>
+
+
+
+            <!-- SOIL CARDS -->
+
+            <div class="soil-grid">
+
+
+                <div class="soil-card">
+
+                    <div class="soil-card-top">
+
+                        <div class="soil-icon">
+                            🌿
+                        </div>
+
+                        <span>
+                            N
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Nitrogen
+                    </h3>
+
+                    <strong id="soilN">
+                        --
+                    </strong>
+
+                    <p>
+                        Supports leaf and vegetative growth.
+                    </p>
+
+                    <div class="mini-progress">
+
+                        <div
+                            class="mini-progress-fill"
+                            style="width:60%;">
+                        </div>
+
+                    </div>
+
+                    <small>
+                        Sensor reading
+                    </small>
+
+                </div>
+
+
+
+                <div class="soil-card">
+
+                    <div class="soil-card-top">
+
+                        <div class="soil-icon">
+                            🌱
+                        </div>
+
+                        <span>
+                            P
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Phosphorus
+                    </h3>
+
+                    <strong id="soilP">
+                        --
+                    </strong>
+
+                    <p>
+                        Supports roots and energy transfer.
+                    </p>
+
+                    <div class="mini-progress">
+
+                        <div
+                            class="mini-progress-fill"
+                            style="width:55%;">
+                        </div>
+
+                    </div>
+
+                    <small>
+                        Sensor reading
+                    </small>
+
+                </div>
+
+
+
+                <div class="soil-card">
+
+                    <div class="soil-card-top">
+
+                        <div class="soil-icon">
+                            🍃
+                        </div>
+
+                        <span>
+                            K
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Potassium
+                    </h3>
+
+                    <strong id="soilK">
+                        --
+                    </strong>
+
+                    <p>
+                        Supports plant strength and resilience.
+                    </p>
+
+                    <div class="mini-progress">
+
+                        <div
+                            class="mini-progress-fill"
+                            style="width:70%;">
+                        </div>
+
+                    </div>
+
+                    <small>
+                        Sensor reading
+                    </small>
+
+                </div>
+
+
+
+                <div class="soil-card moisture-soil-card">
+
+                    <div class="soil-card-top">
+
+                        <div class="soil-icon">
+                            💧
+                        </div>
+
+                        <span>
+                            H₂O
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Soil Moisture
+                    </h3>
+
+                    <strong id="soilMoisture">
+                        --%
+                    </strong>
+
+                    <p>
+                        Indicates water available to crop roots.
+                    </p>
+
+                    <div class="mini-progress">
+
+                        <div
+                            class="mini-progress-fill"
+                            style="width:65%;">
+                        </div>
+
+                    </div>
+
+                    <small>
+                        Live moisture sensor
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- SOIL ANALYSIS -->
+
+            <div class="soil-analysis-grid">
+
+
+                <div class="soil-analysis-card">
+
+                    <div class="analysis-heading">
+
+                        <span>
+                            🧪
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                Nutrient Balance
+                            </h3>
+
+                            <p>
+                                NPK values are continuously monitored.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="nutrient-bars">
+
+                        <div class="nutrient-row">
+
+                            <span>
+                                Nitrogen
+                            </span>
+
+                            <div class="nutrient-track">
+
+                                <div
+                                    class="nutrient-fill"
+                                    style="width:65%;">
+                                </div>
+
+                            </div>
+
+                            <strong>
+                                N
+                            </strong>
+
+                        </div>
+
+
+                        <div class="nutrient-row">
+
+                            <span>
+                                Phosphorus
+                            </span>
+
+                            <div class="nutrient-track">
+
+                                <div
+                                    class="nutrient-fill"
+                                    style="width:55%;">
+                                </div>
+
+                            </div>
+
+                            <strong>
+                                P
+                            </strong>
+
+                        </div>
+
+
+                        <div class="nutrient-row">
+
+                            <span>
+                                Potassium
+                            </span>
+
+                            <div class="nutrient-track">
+
+                                <div
+                                    class="nutrient-fill"
+                                    style="width:72%;">
+                                </div>
+
+                            </div>
+
+                            <strong>
+                                K
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="soil-analysis-card recommendation-card">
+
+                    <span class="card-kicker">
+                        SMART RECOMMENDATION
+                    </span>
+
+                    <h3>
+                        Soil Management
+                    </h3>
+
+                    <p>
+                        Use the NPK readings together with moisture
+                        and crop type to determine whether irrigation
+                        or nutrient management is required.
+                    </p>
+
+
+                    <div class="recommendation-list">
+
+                        <div>
+                            <span>✓</span>
+                            Monitor moisture regularly
+                        </div>
+
+                        <div>
+                            <span>✓</span>
+                            Compare NPK trends
+                        </div>
+
+                        <div>
+                            <span>✓</span>
+                            Use AI for recommendations
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             AI ANALYSIS
+             ================================================= -->
+
+        <section
+            class="page"
+            id="ai">
+
+
+            <div class="page-header">
+
+                <span class="page-kicker">
+                    ARTIFICIAL INTELLIGENCE
+                </span>
+
+                <h2>
+                    AI Crop Analysis 🤖
+                </h2>
+
+                <p>
+                    Combine sensor information and crop context
+                    to generate an intelligent assessment.
+                </p>
+
+            </div>
+
+
+
+            <div class="ai-workspace">
+
+
+                <div class="ai-intro">
+
+                    <div class="ai-orb">
+                        🤖
+                    </div>
+
+                    <div>
+
+                        <span class="card-kicker">
+                            AGRIAI ENGINE
+                        </span>
+
+                        <h2>
+                            Intelligent Crop Assessment
+                        </h2>
+
+                        <p>
+                            The AI evaluates soil moisture,
+                            temperature, humidity and NPK values
+                            to identify potential crop stress and
+                            provide practical recommendations.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="ai-input-summary">
+
+
+                    <div>
+
+                        <span>
+                            🌱 Crop
+                        </span>
+
+                        <strong id="aiCropValue">
+                            Tomato
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            💧 Soil Moisture
+                        </span>
+
+                        <strong id="aiMoistureValue">
+                            --
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            🧪 N / P / K
+                        </span>
+
+                        <strong id="aiNPKValue">
+                            -- / -- / --
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            📈 History
+                        </span>
+
+                        <strong id="aiHistoryValue">
+                            Loading...
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="ai-live-grid">
+
+                    <div class="ai-live-card">
+                        <span>🌡️ Temperature</span>
+                        <strong id="aiTemperatureValue">-- °C</strong>
+                    </div>
+
+                    <div class="ai-live-card">
+                        <span>💨 Humidity</span>
+                        <strong id="aiHumidityValue">-- %</strong>
+                    </div>
+
+                    <div class="ai-live-card">
+                        <span>📡 Device</span>
+                        <strong id="aiDeviceValue">Checking...</strong>
+                    </div>
+
+                </div>
+
+
+
+                <div class="ai-image-input">
+
+                    <div>
+
+                        <span class="card-kicker">
+                            OPTIONAL VISUAL INPUT
+                        </span>
+
+                        <h3>
+                            Add a crop image
+                        </h3>
+
+                        <p id="aiImageStatus">
+                            No image selected. Sensor + history analysis is still available.
+                        </p>
+
+                    </div>
+
+                    <label
+                        class="secondary-button ai-image-button"
+                        for="aiImageInput">
+
+                        📷 Choose Image
+
+                    </label>
+
+                    <input
+                        type="file"
+                        id="aiImageInput"
+                        accept="image/*"
+                        hidden
+                    >
+
+                </div>
+
+
+
+                <div
+                    id="aiImagePreviewWrap"
+                    class="ai-image-preview-wrap"
+                    style="display:none;">
+
+                    <img
+                        id="aiImagePreview"
+                        class="ai-image-preview"
+                        alt="Selected crop for AI analysis"
+                    >
+
+                </div>
+
+
+
+                <div class="ai-action-row">
+
+                    <button
+                        id="analyzeButton"
+                        class="primary-button ai-main-button">
+
+                        🤖 Analyze Sensors with AI
+
+                    </button>
+
+
+                    <button
+                        id="combinedAIButton"
+                        class="primary-button ai-main-button ai-combined-button">
+
+                        🧠 Run Full AI Analysis
+
+                    </button>
+
+                </div>
+
+
+
+                <div
+                    class="ai-help-note">
+
+                    <span>💡</span>
+
+                    <p>
+                        Full AI Analysis combines the current ESP32 readings,
+                        recent history and the selected crop image when one is provided.
+                    </p>
+
+                </div>
+
+
+
+                <div
+                    id="aiResult"
+                    class="ai-result">
+
+                    <div class="empty-state">
+
+                        <div>
+                            🤖
+                        </div>
+
+                        <h3>
+                            AI analysis ready
+                        </h3>
+
+                        <p>
+                            Choose an optional crop image, then run Full AI Analysis
+                            to combine visual, sensor and historical information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             IMAGE
+             ================================================= -->
+
+        <section
+            class="page"
+            id="image">
+
+
+            <div class="page-header">
+
+                <span class="page-kicker">
+                    COMPUTER VISION
+                </span>
+
+                <h2>
+                    Crop Image Analysis 📷
+                </h2>
+
+                <p>
+                    Upload a crop image and let AI inspect visible
+                    plant condition, stress and possible concerns.
+                </p>
+
+            </div>
+
+
+
+            <div class="image-card">
+
+
+                <div class="image-intro">
+
+                    <div class="image-intro-icon">
+                        📷
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Visual Crop Inspection
+                        </h3>
+
+                        <p>
+                            A plant image can provide additional
+                            information that sensors cannot measure.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <input
+                    type="file"
+                    id="imageInput"
+                    accept="image/*"
+                    style="display:none;"
+                >
+
+
+                <button
+                    id="uploadButton"
+                    class="primary-button"
+                    type="button">
+
+                    📷 Select Crop Image
+
+                </button>
+
+
+
+                <div class="image-preview-container">
+
+                    <img
+                        id="imagePreview"
+                        class="image-preview"
+                        src=""
+                        alt="Selected crop image"
+                        style="display:none;"
+                    >
+
+
+                    <div
+                        id="imagePlaceholder"
+                        class="image-placeholder">
+
+                        <div>
+                            🖼️
+                        </div>
+
+                        <strong>
+                            No crop image selected
+                        </strong>
+
+                        <p>
+                            Select a clear image of the plant
+                            for visual analysis.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- WHAT AI CHECKS -->
+
+                <div class="visual-checks">
+
+                    <div>
+
+                        <span>🍃</span>
+
+                        <strong>
+                            Leaf condition
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>🟡</span>
+
+                        <strong>
+                            Discoloration
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>🐛</span>
+
+                        <strong>
+                            Visible damage
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>💧</span>
+
+                        <strong>
+                            Stress symptoms
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <div
+                    id="imageAIResult"
+                    class="ai-result">
+
+                    <p>
+                        Select a crop image to start AI analysis.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             HISTORY
+             ================================================= -->
+
+        <section
+            class="page"
+            id="history">
+
+
+            <div class="page-header">
+
+                <span class="page-kicker">
+                    FARM DATA
+                </span>
+
+                <h2>
+                    Sensor History 📜
+                </h2>
+
+                <p>
+                    Explore previous soil and environmental
+                    measurements collected by the system.
+                </p>
+
+            </div>
+
+
+
+            <!-- HISTORY STATISTICS -->
+
+            <div class="history-stat-grid">
+
+
+                <div class="history-stat-card">
+
+                    <span>
+                        📊
+                    </span>
+
+                    <div>
+
+                        <small>
+                            TOTAL READINGS
+                        </small>
+
+                        <strong id="historyCountTop">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="history-stat-card">
+
+                    <span>
+                        💧
+                    </span>
+
+                    <div>
+
+                        <small>
+                            MOISTURE
+                        </small>
+
+                        <strong>
+                            Tracked
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="history-stat-card">
+
+                    <span>
+                        🌡️
+                    </span>
+
+                    <div>
+
+                        <small>
+                            ENVIRONMENT
+                        </small>
+
+                        <strong>
+                            Tracked
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="history-stat-card">
+
+                    <span>
+                        🧪
+                    </span>
+
+                    <div>
+
+                        <small>
+                            NPK
+                        </small>
+
+                        <strong>
+                            Tracked
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- HISTORY FILTERS -->
+
+            <div class="history-controls">
+
+
+                <div class="history-control">
+
+                    <label for="historyDate">
+                        Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="historyDate">
+
+                </div>
+
+
+                <div class="history-control">
+
+                    <label for="historyStart">
+                        From
+                    </label>
+
+                    <input
+                        type="time"
+                        id="historyStart">
+
+                </div>
+
+
+                <div class="history-control">
+
+                    <label for="historyEnd">
+                        To
+                    </label>
+
+                    <input
+                        type="time"
+                        id="historyEnd">
+
+                </div>
+
+
+                <button
+                    id="historySearchButton"
+                    class="primary-button">
+
+                    Search
+
+                </button>
+
+
+                <button
+                    id="historyTodayButton"
+                    class="secondary-button">
+
+                    Today
+
+                </button>
+
+
+            </div>
+
+
+
+            <!-- HISTORY SUMMARY -->
+
+            <div class="history-summary">
+
+
+                <div>
+
+                    <span>
+                        Readings:
+                    </span>
+
+                    <strong id="historyCount">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Source:
+                    </span>
+
+                    <strong id="historySource">
+                        All
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Status:
+                    </span>
+
+                    <strong id="historyStatus">
+                        Ready
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- HISTORY TABLE -->
+
+            <div class="history-table-container">
+
+                <table class="history-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Moisture</th>
+                            <th>Temperature</th>
+                            <th>Humidity</th>
+                            <th>N</th>
+                            <th>P</th>
+                            <th>K</th>
+                            <th>Source</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="historyTableBody">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- HISTORY PAGINATION -->
+
+            <div class="history-pagination" id="historyPagination">
+
+                <div class="pagination-info">
+
+                    <span class="pagination-page-indicator" id="historyPageIndicator">
+                        Page 1 of 1
+                    </span>
+
+                    <span class="pagination-range-indicator" id="historyRangeIndicator">
+                        Showing 0–0 of 0
+                    </span>
+
+                </div>
+
+                <div class="pagination-controls">
+
+                    <button
+                        id="historyPrevButton"
+                        class="secondary-button pagination-btn"
+                        disabled>
+                        &larr; Previous
+                    </button>
+
+                    <span class="pagination-page-badge" id="historyPageBadge">
+                        Page 1
+                    </span>
+
+                    <button
+                        id="historyNextButton"
+                        class="primary-button pagination-btn"
+                        disabled>
+                        Next &rarr;
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- HISTORY CHARTS (CURRENT PAGE) -->
+
+            <div class="history-charts-header" style="margin-top: 35px; margin-bottom: 15px;">
+
+                <span class="page-kicker">
+                    PAGE TRENDS
+                </span>
+
+                <h3 style="font-size: 18px; color: var(--green-900); font-weight: 700; margin-top: 4px;">
+                    Current Page Analysis (100 Readings) 📈
+                </h3>
+
+                <p style="font-size: 13px; color: #5a7366; margin-top: 3px;">
+                    Graphs represent sensor trends for the readings currently displayed in the table above.
+                </p>
+
+            </div>
+
+            <div class="dashboard-grid history-charts-grid">
+
+                <div class="chart-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-kicker">
+                                ENVIRONMENT
+                            </span>
+
+                            <h3>
+                                Environmental Trends
+                            </h3>
+
+                        </div>
+
+                        <span class="card-badge">
+                            PAGE DATA
+                        </span>
+
+                    </div>
+
+                    <canvas id="historyEnvironmentChart"></canvas>
+
+                </div>
+
+
+                <div class="chart-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-kicker">
+                                SOIL NUTRIENTS
+                            </span>
+
+                            <h3>
+                                NPK Levels
+                            </h3>
+
+                        </div>
+
+                        <span class="card-badge">
+                            PAGE DATA
+                        </span>
+
+                    </div>
+
+                    <canvas id="historyNpkChart"></canvas>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ALERTS
+             ================================================= -->
+
+        <section
+            class="page"
+            id="alerts">
+
+
+            <div class="page-header">
+
+                <span class="page-kicker">
+                    MONITORING CENTER
+                </span>
+
+                <h2>
+                    Alerts ⚠️
+                </h2>
+
+                <p>
+                    Important notifications generated from
+                    sensor conditions and AI analysis.
+                </p>
+
+            </div>
+
+
+
+            <!-- ALERT OVERVIEW -->
+
+            <div class="alert-overview">
+
+
+                <div class="alert-overview-icon">
+                    🛡️
+                </div>
+
+                <div>
+
+                    <span class="card-kicker">
+                        SYSTEM STATUS
+                    </span>
+
+                    <h2>
+                        Farm monitoring is active
+                    </h2>
+
+                    <p>
+                        AgriAI is continuously watching soil,
+                        environmental and nutrient parameters.
+                    </p>
+
+                </div>
+
+                <span class="monitoring-badge">
+                    ● MONITORING
+                </span>
+
+            </div>
+
+
+
+            <!-- ALERT CARDS -->
+
+            <div class="alerts-container">
+
+
+                <div class="alert-card alert-normal">
+
+                    <span class="alert-icon">
+                        💧
+                    </span>
+
+                    <div>
+
+                        <div class="alert-title-row">
+
+                            <h3>
+                                Moisture Monitoring
+                            </h3>
+
+                            <span class="alert-badge">
+                                ACTIVE
+                            </span>
+
+                        </div>
+
+                        <p>
+                            Soil moisture is being monitored
+                            continuously to identify possible
+                            irrigation requirements.
+                        </p>
+
+                        <small>
+                            Trigger: Soil moisture condition
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="alert-card alert-normal">
+
+                    <span class="alert-icon">
+                        🧪
+                    </span>
+
+                    <div>
+
+                        <div class="alert-title-row">
+
+                            <h3>
+                                Nutrient Monitoring
+                            </h3>
+
+                            <span class="alert-badge">
+                                ACTIVE
+                            </span>
+
+                        </div>
+
+                        <p>
+                            Nitrogen, phosphorus and potassium
+                            levels are being tracked.
+                        </p>
+
+                        <small>
+                            Trigger: NPK sensor readings
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="alert-card alert-info">
+
+                    <span class="alert-icon">
+                        🤖
+                    </span>
+
+                    <div>
+
+                        <div class="alert-title-row">
+
+                            <h3>
+                                AI Analysis
+                            </h3>
+
+                            <span class="alert-badge">
+                                READY
+                            </span>
+
+                        </div>
+
+                        <p>
+                            Run AI analysis whenever you want a
+                            detailed interpretation of the current
+                            crop condition.
+                        </p>
+
+                        <small>
+                            Available from AI Analysis
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="alert-card alert-info">
+
+                    <span class="alert-icon">
+                        📷
+                    </span>
+
+                    <div>
+
+                        <div class="alert-title-row">
+
+                            <h3>
+                                Visual Inspection
+                            </h3>
+
+                            <span class="alert-badge">
+                                READY
+                            </span>
+
+                        </div>
+
+                        <p>
+                            Upload a crop image to look for visible
+                            stress, discoloration or plant damage.
+                        </p>
+
+                        <small>
+                            Available from Crop Image
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             SETTINGS
+             ================================================= -->
+
+        <section
+            class="page"
+            id="settings">
+
+
+            <div class="page-header">
+
+                <span class="page-kicker">
+                    SYSTEM CONFIGURATION
+                </span>
+
+                <h2>
+                    Settings ⚙️
+                </h2>
+
+                <p>
+                    Configure the crop, data source and monitoring
+                    behaviour of your AgriAI system.
+                </p>
+
+            </div>
+
+
+
+            <div class="settings-layout">
+
+
+                <!-- CONFIGURATION -->
+
+                <div class="settings-card">
+
+
+                    <div class="settings-card-header">
+
+                        <div>
+
+                            <span class="card-kicker">
+                                CONFIGURATION
+                            </span>
+
+                            <h3>
+                                Monitoring Settings
+                            </h3>
+
+                        </div>
+
+                        <span>
+                            ⚙️
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="setting-row">
+
+
+                        <div class="setting-icon">
+                            🌱
+                        </div>
+
+
+                        <div class="setting-content">
+
+                            <h3>
+                                Crop
+                            </h3>
+
+                            <p>
+                                Select the crop being monitored.
+                                This information is used by AI
+                                during analysis.
+                            </p>
+
+                        </div>
+
+
+                        <select id="settingsCrop">
+
+                            <option value="tomato">
+                                Tomato
+                            </option>
+
+                            <option value="rice">
+                                Rice
+                            </option>
+
+                            <option value="wheat">
+                                Wheat
+                            </option>
+
+                            <option value="maize">
+                                Maize
+                            </option>
+
+                            <option value="cotton">
+                                Cotton
+                            </option>
+
+                        </select>
+
+
+                    </div>
+
+
+
+                    <div class="setting-row">
+
+
+                        <div class="setting-icon">
+                            📡
+                        </div>
+
+
+                        <div class="setting-content">
+
+                            <h3>
+                                Data Source
+                            </h3>
+
+                            <p>
+                                Choose whether the system uses
+                                demo readings or ESP32 sensor data.
+                            </p>
+
+                        </div>
+
+
+                        <select id="dataSource">
+
+                            <option value="auto">
+                                Auto
+                            </option>
+
+                            <option value="demo">
+                                Demo
+                            </option>
+
+                            <option value="esp32">
+                                ESP32
+                            </option>
+
+                        </select>
+
+
+                    </div>
+
+
+
+                    <div class="setting-row">
+
+
+                        <div class="setting-icon">
+                            🔄
+                        </div>
+
+
+                        <div class="setting-content">
+
+                            <h3>
+                                Sensor Refresh
+                            </h3>
+
+                            <p>
+                                Dashboard values are periodically
+                                refreshed from the backend.
+                            </p>
+
+                        </div>
+
+
+                        <span class="setting-value">
+                            5 sec
+                        </span>
+
+
+                    </div>
+
+
+
+                    <div class="setting-row">
+
+
+                        <div class="setting-icon">
+                            🤖
+                        </div>
+
+
+                        <div class="setting-content">
+
+                            <h3>
+                                AI Engine
+                            </h3>
+
+                            <p>
+                                Gemini-powered analysis for crop
+                                condition and recommendations.
+                            </p>
+
+                        </div>
+
+
+                        <span class="setting-value online">
+                            ● Ready
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- SYSTEM INFO -->
+
+                <div class="system-info-card">
+
+
+                    <div class="system-info-header">
+
+                        <span class="card-kicker">
+                            SYSTEM
+                        </span>
+
+                        <h3>
+                            AgriAI Infrastructure
+                        </h3>
+
+                    </div>
+
+
+
+                    <div class="system-item">
+
+                        <span>
+                            Hardware
+                        </span>
+
+                        <strong>
+                            ESP32-S3
+                        </strong>
+
+                    </div>
+
+
+                    <div class="system-item">
+
+                        <span>
+                            Backend
+                        </span>
+
+                        <strong>
+                            Flask
+                        </strong>
+
+                    </div>
+
+
+                    <div class="system-item">
+
+                        <span>
+                            Database
+                        </span>
+
+                        <strong>
+                            SQLite
+                        </strong>
+
+                    </div>
+
+
+                    <div class="system-item">
+
+                        <span>
+                            AI
+                        </span>
+
+                        <strong>
+                            Gemini
+                        </strong>
+
+                    </div>
+
+
+                    <div class="system-item">
+
+                        <span>
+                            Monitoring
+                        </span>
+
+                        <strong class="online">
+                            ● Active
+                        </strong>
+
+                    </div>
+
+
+                    <div class="system-note">
+
+                        🌱 The system is designed so real sensors
+                        can replace simulated readings later without
+                        changing the dashboard architecture.
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<script src="/script.js"></script>
+
+</body>
+
+</html>
